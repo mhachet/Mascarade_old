@@ -1,4 +1,4 @@
-package cards;
+package com.mascarade.cards;
 
 import java.util.ArrayList;
 
@@ -26,5 +26,9 @@ public class Card {
 
     public void setNbPlayers(ArrayList<Integer> nbPlayers) {
         this.nbPlayers = nbPlayers;
+    }
+
+    public String getTypeCard(){
+        return this.getClass().getSimpleName();
     }
 }

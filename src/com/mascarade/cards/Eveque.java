@@ -1,4 +1,4 @@
-package cards;
+package com.mascarade.cards;
 
 /**
  * Created by melanie on 12/03/16.
