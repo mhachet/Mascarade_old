@@ -18,7 +18,7 @@ public class AccueilMascarade extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int nbPlayers = 5;//this.generateNbPlayers();
+        int nbPlayers = this.generateNbPlayers();
         Bank newGame = new Bank(nbPlayers);
         newGame.initialiseCardsBank();
         newGame.initialiseNbPlayers();

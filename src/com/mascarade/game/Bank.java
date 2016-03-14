@@ -95,7 +95,6 @@ public class Bank {
         while(index <= nbPlayers){
             Player player = new Player(6, new Card(), index);
             playersList.add(player);
-            Log.d(MASCARADE, "joueur " + player.getId());
             index ++;
         }
 
@@ -105,7 +104,7 @@ public class Bank {
     public void distributionCards(){
         ArrayList<Player> listPlayers = this.getListPlayers();
         ArrayList<Card> cardsList = this.getBankCardsListStart();
-        ArrayList<Card> cardsListCenter = this.getBankCardsListStart();
+        ArrayList<Card> cardsListCenter = new ArrayList<>();//this.getBankCardsListStart();
         ArrayList<Card> cardsListRemove = new ArrayList<>();
 
         ArrayList<Integer> cardsDone = new ArrayList<>();
@@ -114,42 +113,39 @@ public class Bank {
         for(int p = 1 ; p <= listPlayers.size() ; p++){
             Player player = listPlayers.get(p-1);
             Random randomIndex = new Random();
-            //int randomNum = rand.nextInt((max - min) + 1) + min;
             int indexRandom = 0;
             while(cardsDone.contains(indexRandom)){
                 indexRandom = 1 + randomIndex.nextInt(nbPlayers);
-                Log.d(MASCARADE, "random : " + indexRandom);
+                //Log.d(MASCARADE, "random : " + indexRandom);
             }
             if(!cardsDone.contains(indexRandom)){
                 Card card = cardsList.get(indexRandom);
-                //Log.d(MASCARADE, "player : " + player.getId() + " __ " + card.getTypeCard() + "  => " + indexRandom);
                 cardsDone.add(indexRandom);
                 player.setCard(card);
                 if(nbPlayers < 6){
-                    //Log.d(MASCARADE, "Carte " + cardsListCenter.get(indexRandom).getTypeCard() + " ne va pas au centre");
                     cardsListRemove.add(card);
-                    //Log.d(MASCARADE, "remove " + cardsListCenter.get(indexRandom).getTypeCard() + " " + indexRandom);
-                    //Log.d(MASCARADE, "size : " + cardsListCenter.size());
                 }
             }
 
             Log.d(MASCARADE, "Joueur " + player.getId() + " obtient la carte " + player.getTypeCard() + " " + indexRandom);
         }
 
-        Log.d(MASCARADE, "Il y a " + nbPlayers + " joueurs donc les cartes suivantes vont au centre : ");
+
         if(nbPlayers < 6) {
-            for (int i = 0; i < cardsList.size() ; i++) {
+            Log.d(MASCARADE, "Il y a " + nbPlayers + " joueurs donc le(s) carte(s) suivante(s) va/vont au centre : ");
+            for (int i = 0; i < cardsList.size(); i++) {
                 Card card = cardsList.get(i);
-                Log.d(MASCARADE,"card : " + card.getTypeCard());
-               /*if(!cardsListRemove.contains(card)){
+
+                if(!cardsListRemove.contains(card)){
                     cardsListCenter.add(card);
-                }*/
+                }
             }
-            for(int c = 0; c < cardsListCenter.size(); c++){
-                Log.d(MASCARADE, " -> " + cardsListCenter.get(c).getTypeCard());
+
+            this.setBankCardsCenter(cardsListCenter);
+            for (int c = 0; c < this.getBankCardsCenter().size(); c++) {
+                Log.d(MASCARADE, " -> " + this.getBankCardsCenter().get(c).getTypeCard());
             }
         }
-
 
     }
 
