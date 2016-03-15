@@ -1,5 +1,7 @@
 package com.mascarade.cards;
 
+import com.mascarade.game.Player;
+
 import java.util.ArrayList;
 
 /**
@@ -8,6 +10,8 @@ import java.util.ArrayList;
 public class Card {
 
     protected ArrayList<Integer> nbPlayers;
+    protected boolean visibleAll = false;
+    protected boolean visiblePlayer = false;
 
     public Card(){
     }
@@ -20,6 +24,13 @@ public class Card {
         }
     }
 
+    public void activePower(){
+
+    }
+
+    public void exchangeCards(Player playerOne, Player playerTwo){
+
+    }
     public ArrayList<Integer> getNbPlayers() {
         return nbPlayers;
     }
@@ -30,5 +41,21 @@ public class Card {
 
     public String getTypeCard(){
         return this.getClass().getSimpleName();
+    }
+
+    public boolean isVisibleAll() {
+        return visibleAll;
+    }
+
+    public void setVisibleAll(boolean visibleAll) {
+        this.visibleAll = visibleAll;
+    }
+
+    public boolean isVisiblePlayer() {
+        return visiblePlayer;
+    }
+
+    public void setVisiblePlayer(boolean visiblePlayer) {
+        this.visiblePlayer = visiblePlayer;
     }
 }

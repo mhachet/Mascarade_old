@@ -89,10 +89,10 @@ public class Bank {
     }
 
     public void initialiseNbPlayers(){
-        int index = 1;
+        int index = 0;
         ArrayList<Player> playersList = new ArrayList<>();
 
-        while(index <= nbPlayers){
+        while(index < nbPlayers){
             Player player = new Player(6, new Card(), index);
             playersList.add(player);
             index ++;
@@ -110,14 +110,14 @@ public class Bank {
         ArrayList<Integer> cardsDone = new ArrayList<>();
         Log.d(MASCARADE, "nb joueur : " + listPlayers.size());
 
-        for(int p = 1 ; p <= listPlayers.size() ; p++){
-            Player player = listPlayers.get(p-1);
+        for(int p = 0 ; p < listPlayers.size() ; p++){
+            Player player = listPlayers.get(p);
             Random randomIndex = new Random();
-            int indexRandom = 0;
+            int indexRandom = randomIndex.nextInt(nbPlayers);
             while(cardsDone.contains(indexRandom)){
-                indexRandom = 1 + randomIndex.nextInt(nbPlayers);
-                //Log.d(MASCARADE, "random : " + indexRandom);
+                indexRandom = randomIndex.nextInt(nbPlayers);
             }
+            Log.d(MASCARADE, "random : " + indexRandom + "  cardsDone  " + cardsDone.toString());
             if(!cardsDone.contains(indexRandom)){
                 Card card = cardsList.get(indexRandom);
                 cardsDone.add(indexRandom);
@@ -129,7 +129,6 @@ public class Bank {
 
             Log.d(MASCARADE, "Joueur " + player.getId() + " obtient la carte " + player.getTypeCard() + " " + indexRandom);
         }
-
 
         if(nbPlayers < 6) {
             Log.d(MASCARADE, "Il y a " + nbPlayers + " joueurs donc le(s) carte(s) suivante(s) va/vont au centre : ");
@@ -148,6 +147,8 @@ public class Bank {
         }
 
     }
+
+
 
     public ArrayList<Player> getListPlayers() {
         return listPlayers;
