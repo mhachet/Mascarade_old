@@ -4,13 +4,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-import com.mascarade.cards.Card;
 import com.mascarade.cards.Espionne;
-import com.mascarade.cards.Roi;
+import com.mascarade.cards.Eveque;
+import com.mascarade.cards.Fou;
 import com.mascarade.game.Bank;
 import com.mascarade.game.Player;
 
-import java.util.List;
 import java.util.Random;
 
 public class AccueilMascarade extends Activity {
@@ -22,15 +21,16 @@ public class AccueilMascarade extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int nbPlayers = 7;//this.generateNbPlayers();
+        int nbPlayers = 8;//this.generateNbPlayers();
         Bank newGame = new Bank(nbPlayers);
         newGame.initialiseCardsBank();
         newGame.initialiseNbPlayers();
 
         newGame.distributionCards();
         boolean exchange = true;
-        this.espionnePower(newGame, exchange);
-
+        //this.espionnePower(newGame, exchange);
+        //this.evequePower(newGame);
+        this.fouPower(newGame);
         TextView textView = new TextView(this);
         textView.setText("Le nombre de joueurs est : " + nbPlayers + ".\n" +
                 "Les cartes en jeu sont : " + newGame.getBankCardsListStart());
@@ -39,33 +39,46 @@ public class AccueilMascarade extends Activity {
         setContentView(textView);
     }
 
+    public void evequePower(Bank bank){
+        Player playerEveque = bank.getPlayerWithCard("Eveque");
+        Eveque eveque = (Eveque)playerEveque.getCard();
+        Log.d(MASCARADE, "eveque est : " + playerEveque.getId() + "  " + playerEveque.getTypeCard());
+
+        eveque.activePower(playerEveque, bank);
+
+    }
+
+    public void fouPower(Bank game){
+        boolean changeCards = true;
+        Player playerFou = game.getPlayerWithCard("Fou");
+        Fou fou = (Fou)playerFou.getCard();
+        Player firstPlayer = game.getRandomPlayer();
+        Player secondPlayer = game.getRandomPlayer();
+        while(firstPlayer.equals(playerFou)){
+            firstPlayer = game.getRandomPlayer();
+        }
+        while(secondPlayer.equals(playerFou) || secondPlayer.equals(firstPlayer)){
+            secondPlayer = game.getRandomPlayer();
+        }
+        fou.activePower(playerFou, firstPlayer, secondPlayer,changeCards);
+
+    }
     public boolean espionnePower(Bank game, boolean exchange) {
         boolean exchangeDone = false;
-
-        List<Player> playerList = game.getListPlayers();
-        for (int i = 0; i < playerList.size(); i++) {
-            if(!exchangeDone){
-                Player player = playerList.get(i);
-                Espionne espion = null;
-
-                Card playerCard = player.getCard();
-                String cardName = playerCard.getTypeCard();
-                if (cardName.equals("Espionne")) {
-                    espion = (Espionne) playerCard;
-                    Log.d(MASCARADE, "espion est : " + player.getId() + "  " + player.getTypeCard());
-                    Player opponentPlayer = null;
-                    if (i < playerList.size() - 1) {
-                        opponentPlayer = playerList.get(i + 1);
-                    } else {
-                        opponentPlayer = playerList.get(i - 1);
-                    }
-                    Log.d(MASCARADE, "playerOpponent : " + opponentPlayer.getId() + "  " + opponentPlayer.getTypeCard());
-                    espion.activePower(player, opponentPlayer, exchange);
-                    exchangeDone = true;
-                }
-            }
-
+        Player playerEspion = game.getPlayerWithCard("Espionne");
+        Espionne espion = (Espionne)playerEspion.getCard();
+        Log.d(MASCARADE, "espion est : " + playerEspion.getId() + "  " + playerEspion.getTypeCard());
+        int idPlayerEspion = playerEspion.getId();
+        Player opponentPlayer = null;
+        if (idPlayerEspion < game.getListPlayers().size() - 1) {
+            opponentPlayer = game.getListPlayers().get(idPlayerEspion + 1);
+        } else {
+            opponentPlayer = game.getListPlayers().get(idPlayerEspion - 1);
         }
+        Log.d(MASCARADE, "playerOpponent : " + opponentPlayer.getId() + "  " + opponentPlayer.getTypeCard());
+        espion.activePower(playerEspion, opponentPlayer, exchange);
+        exchangeDone = true;
+
 
         return exchangeDone;
     }

@@ -1,5 +1,6 @@
 package com.mascarade.cards;
 
+import android.util.Log;
 import com.mascarade.game.Player;
 import com.mascarade.game.Bank;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public class Eveque extends Card{
 
     private final int [] nbPlayersEveque = {4,5,6,7,8,9,10,11,12,13};
-
+    private static final String EVEQUE = "EVEQUE";
     public Eveque(){
         this.initialiseNbPlayers(nbPlayersEveque);
     }
@@ -24,7 +25,20 @@ public class Eveque extends Card{
      */
     public void activePower(Player concernedPlayer, Bank bank){
         int maxMoney = this.findMaxMoneyOfPlayers(bank);
-        List<Player> richestPlayer = this.findRichestPlayers(bank, maxMoney);
+        List<Player> richestPlayers = this.findRichestPlayers(bank, maxMoney);
+        Player opponentPlayer = richestPlayers.get(0);
+        int nbMoneyOpponent = opponentPlayer.getNbMoney();
+        Log.d(EVEQUE, "before eveque has " + concernedPlayer.getNbMoney() + " and opponent " + opponentPlayer.getNbMoney());
+        if(nbMoneyOpponent >=2){
+            concernedPlayer.setNbMoney(concernedPlayer.getNbMoney() + 2);
+            opponentPlayer.setNbMoney(opponentPlayer.getNbMoney() - 2);
+        }
+        else{
+            concernedPlayer.setNbMoney(concernedPlayer.getNbMoney() + opponentPlayer.getNbMoney());
+            opponentPlayer.setNbMoney(0);
+        }
+        Log.d(EVEQUE, "after eveque has " + concernedPlayer.getNbMoney() + " and opponent " + opponentPlayer.getNbMoney());
+
     }
 
     public int findMaxMoneyOfPlayers(Bank bank){

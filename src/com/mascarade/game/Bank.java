@@ -189,4 +189,30 @@ public class Bank {
     public void setNbPlayers(int nbPlayers) {
         this.nbPlayers = nbPlayers;
     }
+
+    public Player getPlayerWithCard(String typeCardConcerned){
+        ArrayList<Player> listPlayers = this.getListPlayers();
+        Player playerConcerned = null;
+        boolean playerFound = false;
+        for(int i = 0 ; i < listPlayers.size() ; i++){
+            if(!playerFound) {
+                Player player = listPlayers.get(i);
+                String cardPlayer = player.getTypeCard();
+                if (cardPlayer.equals(typeCardConcerned)) {
+                    playerConcerned = player;
+                    playerFound = true;
+                }
+            }
+        }
+
+        return playerConcerned;
+    }
+
+    public Player getRandomPlayer(){
+        Random randomIdPlayer = new Random();
+        int indexRandom = randomIdPlayer.nextInt(nbPlayers);
+        Player randomPlayer = this.getListPlayers().get(indexRandom);
+
+        return randomPlayer;
+    }
 }

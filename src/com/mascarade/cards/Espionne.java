@@ -26,8 +26,8 @@ public class Espionne extends Card{
      * and his/her card in order to change (or not) theses two cards.
      *
      */
-    public void activePower(Player concernedPlayer, Player opponent, boolean choicePlayer){
-        Card concernedPlayerCard = concernedPlayer.getCard();
+    public void activePower(Player espionnePlayer, Player opponent, boolean changeCards){
+        Card concernedPlayerCard = espionnePlayer.getCard();
         Card opponentPlayerCard = opponent.getCard();
 
         concernedPlayerCard.setVisiblePlayer(true);
@@ -35,15 +35,15 @@ public class Espionne extends Card{
 
         // draw box to propose exchange
         // and retrieve player choice
-        if(choicePlayer){
-            Log.d(ESPIONNE, "player " + concernedPlayer.getId() + " : " + concernedPlayer.getTypeCard() + " opponent " + opponent.getId() + "  " + opponent.getTypeCard());
+        if(changeCards){
+            Log.d(ESPIONNE, "player " + espionnePlayer.getId() + " : " + espionnePlayer.getTypeCard() + " opponent " + opponent.getId() + "  " + opponent.getTypeCard());
 
             Card tempCard = new Card();
             tempCard = opponentPlayerCard;
             opponent.setCard(concernedPlayerCard);
-            concernedPlayer.setCard(tempCard);
+            espionnePlayer.setCard(tempCard);
 
-            Log.d(ESPIONNE, "player " + concernedPlayer.getId() + ": " + concernedPlayer.getTypeCard() + " opponent " + opponent.getId() + " : " + opponent.getTypeCard());
+            Log.d(ESPIONNE, "player " + espionnePlayer.getId() + ": " + espionnePlayer.getTypeCard() + " opponent " + opponent.getId() + " : " + opponent.getTypeCard());
         }
 
         concernedPlayerCard.setVisiblePlayer(false);
